@@ -53,7 +53,7 @@ The app will be available at `http://localhost:5173`
 
 * `/login` — Sign in
 * `/register` — Create account
-* `/` — Shows authenticated user info and logout
+* `/home` — Shows authenticated user info and logout
 
 ---
 

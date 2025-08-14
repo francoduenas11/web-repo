@@ -1,44 +1,82 @@
-import { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { useNavigate, Link } from 'react-router-dom';
+// src/pages/Register.jsx
+import { useState } from 'react'
+import { useAuth } from '../hooks/useAuth'
+import { useNavigate, Link } from 'react-router-dom'
 
 export default function Register() {
-  const { register, loading, error } = useAuth();
-  const [name, setName] = useState('Test User');
-  const [email, setEmail] = useState('test2@example.com');
-  const [password, setPassword] = useState('Password123!');
-  const navigate = useNavigate();
+  const { register, loading, error } = useAuth()
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const navigate = useNavigate()
 
   const onSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      await register(name, email, password);
-      navigate('/', { replace: true });
-    } catch {}
-  };
+      await register(name, email, password)
+      navigate('/', { replace: true })
+    } catch {
+      // error shown via `error` from hook
+    }
+  }
 
   return (
-    <form onSubmit={onSubmit} style={{ maxWidth: 360, margin: '40px auto' }}>
-      <h2>Register</h2>
-      {error && <div style={{ color: 'crimson' }}>{error}</div>}
-      <div style={{ marginTop: 12 }}>
-        <label>Name</label>
-        <input value={name} onChange={(e) => setName(e.target.value)} required style={{ width: '100%' }} />
-      </div>
-      <div style={{ marginTop: 12 }}>
-        <label>Email</label>
-        <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required style={{ width: '100%' }} />
-      </div>
-      <div style={{ marginTop: 12 }}>
-        <label>Password</label>
-        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required style={{ width: '100%' }} />
-      </div>
-      <button disabled={loading} style={{ marginTop: 16, width: '100%' }}>
-        {loading ? 'Creating…' : 'Create account'}
-      </button>
-      <div style={{ marginTop: 12 }}>
-        Have an account? <Link to="/login">Login</Link>
-      </div>
-    </form>
-  );
+    <div className="centered-page">
+      <form className="card form" onSubmit={onSubmit}>
+        <h2 className="card__title">Create account</h2>
+
+        {error && <div className="form__error">{error}</div>}
+
+        <div>
+          <label htmlFor="name">Name</label>
+          <input
+            id="name"
+            className="input"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Your name"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="reg-email">Email</label>
+          <input
+            id="reg-email"
+            className="input"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="reg-password">Password</label>
+          <input
+            id="reg-password"
+            className="input"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="At least 8 characters"
+            required
+            minLength={8}
+          />
+          <div className="helper">Use 8+ characters with a mix of letters and numbers.</div>
+        </div>
+
+        <button className="btn btn--primary" type="submit" disabled={loading}>
+          {loading ? 'Creating…' : 'Sign up'}
+        </button>
+
+        <hr className="hr" />
+
+        <div>
+          Already have an account? <Link to="/login">Log in</Link>
+        </div>
+      </form>
+    </div>
+  )
 }

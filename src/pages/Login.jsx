@@ -1,39 +1,67 @@
-import { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { useNavigate, Link } from 'react-router-dom';
+// src/pages/Login.jsx
+import { useState } from 'react'
+import { useAuth } from '../hooks/useAuth'
+import { useNavigate, Link } from 'react-router-dom'
 
 export default function Login() {
-  const { login, loading, error } = useAuth();
-  const [email, setEmail] = useState('test@example.com');
-  const [password, setPassword] = useState('Password123!');
-  const navigate = useNavigate();
+  const { login, loading, error } = useAuth()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const navigate = useNavigate()
 
   const onSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      await login(email, password);
-      navigate('/', { replace: true });
-    } catch {}
-  };
+      await login(email, password)
+      navigate('/', { replace: true })
+    } catch {
+      // error surfaced via `error`
+    }
+  }
 
   return (
-    <form onSubmit={onSubmit} style={{ maxWidth: 360, margin: '40px auto' }}>
-      <h2>Login</h2>
-      {error && <div style={{ color: 'crimson' }}>{error}</div>}
-      <div style={{ marginTop: 12 }}>
-        <label>Email</label>
-        <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required style={{ width: '100%' }} />
-      </div>
-      <div style={{ marginTop: 12 }}>
-        <label>Password</label>
-        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required style={{ width: '100%' }} />
-      </div>
-      <button disabled={loading} style={{ marginTop: 16, width: '100%' }}>
-        {loading ? 'Signing in…' : 'Login'}
-      </button>
-      <div style={{ marginTop: 12 }}>
-        No account? <Link to="/register">Register</Link>
-      </div>
-    </form>
-  );
+    <div className="centered-page">
+      <form className="card form" onSubmit={onSubmit}>
+        <h2 className="card__title">Login</h2>
+
+        {error && <div className="form__error">{error}</div>}
+
+        <div>
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            className="input"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            className="input"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            required
+          />
+        </div>
+
+        <button className="btn btn--primary" type="submit" disabled={loading}>
+          {loading ? 'Signing in…' : 'Log in'}
+        </button>
+
+        <hr className="hr" />
+
+        <div>
+          No account? <Link to="/register">Register</Link>
+        </div>
+      </form>
+    </div>
+  )
 }
